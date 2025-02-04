@@ -12,9 +12,8 @@ import sheridan.erdiskeegan.assignment1.onlinebookstore.beans.BookList;
 import sheridan.erdiskeegan.assignment1.onlinebookstore.beans.CartItem;
 import sheridan.erdiskeegan.assignment1.onlinebookstore.beans.CartService;
 
-import java.util.ArrayList;
-import java.util.List;
 
+import java.util.List;
 
 @Controller
 public class BookController {
@@ -42,7 +41,7 @@ public class BookController {
 
       model.addAttribute("newBook", new Book());
       return "addBookForm";
-    };
+    }
 
     @PostMapping("/add-book")
     public String addBook(@ModelAttribute("newBook") Book newBook) {
@@ -60,7 +59,7 @@ public class BookController {
     }
 
     @GetMapping("/add-to-cart")
-    public String addToCart(@RequestParam Long bookISBN, @RequestParam String bookTitle, @RequestParam double bookPrice, Model model) {
+    public String addToCart(@RequestParam Long bookISBN, @RequestParam String bookTitle, @RequestParam double bookPrice) {
         cartService.addToCart(bookISBN, bookTitle, bookPrice);
         return "redirect:/shopping-books";
     }

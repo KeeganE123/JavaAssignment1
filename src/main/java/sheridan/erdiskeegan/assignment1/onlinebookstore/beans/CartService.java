@@ -5,7 +5,6 @@ import lombok.Getter;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
-import sheridan.erdiskeegan.assignment1.onlinebookstore.beans.CartItem;
 
 
 
@@ -36,7 +35,5 @@ public class CartService {
     }
 
 
-    public void clearCart() {
-        cart.clear();
-    }
+
 }
