@@ -55,20 +55,41 @@ public class BookController {
         List<Book> books = bookList.getAvailableBooks();
         model.addAttribute("books", books);
         model.addAttribute("cart", cartService.getCart());
-        model.addAttribute("cartCount", cartService.getCartCount()); // Get cart count from the CartService
+        model.addAttribute("cartCount", cartService.getCartCount());
         return "shoppingBooks";
     }
 
     @GetMapping("/add-to-cart")
-    public String addToCart(@RequestParam Long bookISBN, @RequestParam String bookTitle, @RequestParam String bookAuthor, @RequestParam double bookPrice, Model model) {
-        cartService.addToCart(bookISBN, bookTitle);
-        model.addAttribute("cartCount", cartService.getCartCount());
+    public String addToCart(@RequestParam Long bookISBN, @RequestParam String bookTitle, @RequestParam double bookPrice, Model model) {
+        cartService.addToCart(bookISBN, bookTitle, bookPrice);
         return "redirect:/shopping-books";
     }
 
     @GetMapping("/remove-from-cart")
     public String removeFromCart(@RequestParam Long bookISBN) {
         cartService.removeFromCart(bookISBN);
-        return "redirect:/shopping-books"; // Redirect to update the cart
+        return "redirect:/shopping-books";
+    }
+
+    @GetMapping("/checkout")
+    public String showCheckoutPage(Model model) {
+        List<CartItem> cartItems = cartService.getCart();
+
+
+        double subtotal = cartItems.stream()
+                .mapToDouble(item -> item.getQuantity() * item.getBookPrice())
+                .sum();
+
+
+        double saleTax = subtotal * 0.13;
+        double total = subtotal + saleTax;
+
+
+        model.addAttribute("cartItems", cartItems);
+        model.addAttribute("subtotal", subtotal);
+        model.addAttribute("saleTax", saleTax);
+        model.addAttribute("total", total);
+
+        return "checkout";
     }
 }

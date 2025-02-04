@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout</title>
+</head>
+<body>
+<div th:replace="~{fragments/header}"></div>
+<h2>Checkout</h2>
+
+<table border="1" cellpadding="10" cellspacing="0">
+    <thead>
+    <tr>
+        <th>Book Title</th>
+        <th>Quantity</th>
+        <th>Price</th>
+        <th>Total</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="item : ${cartItems}">
+        <td th:text="${item.bookTitle}"></td>
+        <td th:text="${item.quantity}"></td>
+        <td th:text="${item.bookPrice}"></td>
+        <td th:text="${item.quantity * item.bookPrice}"></td> <!-- Total per book (Quantity * Price) -->
+    </tr>
+    <!-- Payment Details Row -->
+    <tr>
+        <td colspan="3" style="text-align: right; font-weight: bold;">Subtotal:</td>
+        <td th:text="${subtotal}"></td>
+    </tr>
+    <tr>
+        <td colspan="3" style="text-align: right; font-weight: bold;">Sale Tax (13%):</td>
+        <td th:text="${saleTax}"></td>
+    </tr>
+    <tr>
+        <td colspan="3" style="text-align: right; font-weight: bold;">Total:</td>
+        <td th:text="${total}"></td>
+    </tr>
+    </tbody>
+</table>
+
+<div style="text-align: center; margin-top: 20px;">
+    <button>Proceed to Checkout</button>
+</div>
+
+<div th:replace="~{fragments/footer}"></div>
+</body>
+</html>
+
+<style>
+    table {
+        width: 50%;
+        margin: 20px auto;
+        border-collapse: collapse;
+        border: 2px solid aquamarine;
+    }
+
+    th, td {
+        padding: 12px;
+        text-align: left;
+        border: 1px solid #ddd;
+    }
+
+    th {
+        background-color: #f2f2f2;
+    }
+
+
+    td[colspan="3"] {
+        background-color: #f9f9f9;
+        font-weight: bold;
+    }
+
+    button {
+        padding: 10px 20px;
+        font-size: 16px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background-color: #45a049;
+    }
+</style>
