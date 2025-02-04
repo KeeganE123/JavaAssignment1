@@ -1,9 +1,12 @@
 package sheridan.erdiskeegan.assignment1.onlinebookstore.beans;
 
 import lombok.Getter;
+import lombok.experimental.Accessors;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.List;
+
 
 @Getter
 public class BookList {

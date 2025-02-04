@@ -1,1 +1,77 @@
-,<h1>hello</h1>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Books</title>
+</head>
+<body>
+
+<div class="cart-count">
+    Cart: <span th:text="${cartCount}">0</span> item(s)
+</div>
+
+<h2>Available Books</h2>
+<table>
+    <thead>
+    <tr>
+        <th>ISBN</th>
+        <th>Title</th>
+        <th>Author</th>
+        <th>Price</th>
+        <th>Add to Cart</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="book : ${books}">
+        <td th:text="${book.bookISBN}"></td>
+        <td th:text="${book.bookTitle}"></td>
+        <td th:text="${book.bookAuthor}"></td>
+        <td th:text="${book.bookPrice}"></td>
+        <td><a th:href="@{/add-to-cart(bookISBN=${book.bookISBN}, bookTitle=${book.bookTitle}, bookAuthor=${book.bookAuthor}, bookPrice=${book.bookPrice})}">Add to Cart</a></td>
+    </tr>
+    </tbody>
+</table>
+
+<h2>Your Shopping Cart</h2>
+<table>
+    <thead>
+    <tr>
+        <th>Book Title</th>
+        <th>Quantity</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="item : ${cart}">
+        <td th:text="${item.bookTitle}"></td>
+        <td th:text="${item.quantity}"></td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>
+
+<style>
+    table {
+        width: 50%;
+        margin: 20px auto;
+        border-collapse: collapse;
+        border: 2px solid aquamarine;
+    }
+
+    th, td {
+        padding: 12px;
+        text-align: left;
+        border: 1px solid #ddd;
+    }
+
+    th {
+        background-color: #f2f2f2;
+    }
+
+    .cart-count {
+        font-size: 18px;
+        font-weight: bold;
+    }
+</style>

@@ -9,7 +9,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import sheridan.erdiskeegan.assignment1.onlinebookstore.beans.Book;
 import sheridan.erdiskeegan.assignment1.onlinebookstore.beans.BookList;
+import sheridan.erdiskeegan.assignment1.onlinebookstore.beans.CartItem;
+import sheridan.erdiskeegan.assignment1.onlinebookstore.beans.CartService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -17,6 +20,9 @@ import java.util.List;
 public class BookController {
 
     private final BookList bookList = new BookList();
+
+    @Autowired
+    private CartService cartService;
 
     @GetMapping("/available-books")
     public String showAvailableBooks(Model model) {
@@ -26,9 +32,9 @@ public class BookController {
         return "availableBooks";
     }
 
-    @GetMapping("/")
-    public String homePage() {
-        return "index";  // Load the home page
+    @GetMapping("/index")
+    public String index() {
+        return "index";
     }
 
     @GetMapping("/add-book")
@@ -36,13 +42,33 @@ public class BookController {
 
       model.addAttribute("newBook", new Book());
       return "addBookForm";
-
-
     };
 
     @PostMapping("/add-book")
     public String addBook(@ModelAttribute("newBook") Book newBook) {
         bookList.addBook(newBook);
         return "redirect:/available-books";
+    }
+
+    @GetMapping("/shopping-books")
+    public String showShoppingBooks(Model model) {
+        List<Book> books = bookList.getAvailableBooks();
+        model.addAttribute("books", books);
+        model.addAttribute("cart", cartService.getCart());
+        model.addAttribute("cartCount", cartService.getCartCount()); // Get cart count from the CartService
+        return "shoppingBooks";
+    }
+
+    @GetMapping("/add-to-cart")
+    public String addToCart(@RequestParam Long bookISBN, @RequestParam String bookTitle, @RequestParam String bookAuthor, @RequestParam double bookPrice, Model model) {
+        cartService.addToCart(bookISBN, bookTitle);
+        model.addAttribute("cartCount", cartService.getCartCount());
+        return "redirect:/shopping-books";
+    }
+
+    @GetMapping("/remove-from-cart")
+    public String removeFromCart(@RequestParam Long bookISBN) {
+        cartService.removeFromCart(bookISBN);
+        return "redirect:/shopping-books"; // Redirect to update the cart
     }
 }
